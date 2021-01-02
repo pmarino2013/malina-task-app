@@ -1,0 +1,160 @@
+<script>
+  let tarea = "";
+  let done = true;
+  // let tasks = [];
+
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  console.log(tasks);
+
+  const guardarTarea = () => {
+    if (tarea !== "") {
+      tasks.push({ tarea: tarea, done: false });
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+  };
+
+  const calcularTareas = () => {
+    let pendientes = tasks.filter((item) => {
+      return item.done !== true;
+    });
+
+    return pendientes.length;
+  };
+
+  const keyPress = (e) => {
+    let codigo = e.keyCode;
+    if (codigo === 13) {
+      guardarTarea();
+      e.target.value = "";
+    }
+  };
+
+  const limpiarTareas = () => {
+    let tareasDone = tasks.filter((item) => {
+      return item.done !== true;
+    });
+    localStorage.setItem("tasks", JSON.stringify(tareasDone));
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+  };
+</script>
+
+<div class="container">
+  <div class="card">
+    <div class="row">
+      <img src="https://malinajs.github.io/docs/favicon-32x32.png" alt="" />
+      <h1>Task App</h1>
+    </div>
+    <div class="row">
+      <input
+        type="text"
+        placeholder="Ingrese la tarea"
+        :value="{tarea}"
+        @keypress="{keyPress}"
+      />
+    </div>
+    <div class="row texttarea">
+      <span>
+        Tareas pendientes {calcularTareas()} de {tasks.length>0?tasks.length:0}
+      </span>
+      <button @click="{limpiarTareas()}">X</button>
+    </div>
+
+    <div class="row">
+      {#if tasks.length>0}
+      <ul class="card-list">
+        {#each tasks as task}
+
+        <li class="tachado-{task.done}">
+          {#if task.tarea!==""}<input type="checkbox" checked={task.done ? true
+          : false}
+          @change={()=>{task.done=!task.done;localStorage.setItem('tasks',JSON.stringify(tasks))}}
+          /> {/if}{task.tarea}
+        </li>
+        {/each}
+      </ul>
+      {:else}
+      <h4>No hay tareas</h4>
+      {/if}
+    </div>
+  </div>
+</div>
+
+<style>
+  .container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .card {
+    width: 300px;
+    border: 1px solid grey;
+    padding: 0.375rem 0.75rem;
+
+    box-shadow: 0px 6px 15px -4px #000000;
+  }
+  .card-list {
+    width: 300px;
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+  }
+
+  .texttarea {
+    margin-top: 10px;
+  }
+  input[type="text"] {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-decoration: none;
+    height: 30px;
+    width: 300px;
+  }
+
+  input[type="text"]:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  ul {
+    list-style: none;
+  }
+  button {
+    /* text-decoration: none;
+    height: 40px;
+    padding: 10px;
+    font-weight: bold;
+    background-color: coral; */
+    text-decoration: none;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 10px;
+    color: #ffffff;
+    background-color: #1883ba;
+    border-radius: 6px;
+    border: 2px solid #0016b0;
+    margin-left: 10px;
+  }
+
+  /* button:hover {
+    color: #1883ba;
+    background-color: #ffffff;
+  } */
+
+  .tachado-true {
+    text-decoration: line-through;
+  }
+</style>
