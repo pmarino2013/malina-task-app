@@ -1,16 +1,24 @@
 <script>
   let tarea = "";
   let done = true;
-  // let tasks = [];
+  let tasks = [];
 
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  console.log(tasks);
+  // let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  //Cuando el componente es montado
+  function onMount() {
+    console.log("Componente montado");
+    tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  }
 
   const guardarTarea = () => {
     if (tarea !== "") {
       tasks.push({ tarea: tarea, done: false });
       localStorage.setItem("tasks", JSON.stringify(tasks));
     }
+    return {
+      update: console.log("se actualizó tasks"),
+    };
   };
 
   const calcularTareas = () => {
