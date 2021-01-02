@@ -1,4 +1,6 @@
 <script>
+  import Navbar from "./component/Navbar.xht";
+  let titulo = "Malina Task App";
   let tarea = "";
   let done = true;
   let tasks = [];
@@ -45,7 +47,7 @@
     tasks = JSON.parse(localStorage.getItem("tasks"));
   };
 </script>
-
+<Navbar titulo="{titulo}" />
 <div class="container">
   <div class="card">
     <div class="row">
