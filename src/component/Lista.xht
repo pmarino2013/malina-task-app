@@ -1,0 +1,41 @@
+<script>
+  export let tasks = tasks;
+  export const calcularTareas = calcularTareas;
+</script>
+
+<div class="row">
+  {#if tasks.length>0}
+  <ul class="card-list">
+    {#each tasks as task}
+
+    <li class="tachado-{task.done}">
+      {#if task.tarea!==""}<input type="checkbox" checked={task.done ? true :
+      false}
+      @change={()=>{task.done=!task.done;localStorage.setItem('tasks',JSON.stringify(tasks));calcularTareas()}}
+      /> {/if}{task.tarea}
+    </li>
+    {/each}
+  </ul>
+  {:else}
+  <h4>No hay tareas</h4>
+  {/if}
+</div>
+
+<style>
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .card-list {
+    width: 300px;
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+  }
+  ul {
+    list-style: none;
+  }
+  .tachado-true {
+    text-decoration: line-through;
+  }
+</style>
